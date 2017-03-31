@@ -24,6 +24,7 @@ if (class_exists('VPD_EBANX_WC')) {
 
 class VPD_EBANX_WC {
 	const INCLUDES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
+	const INTERCEPTORS_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'interceptors' . DIRECTORY_SEPARATOR;
 
 	/**
 	 * Holds the singleton
@@ -61,9 +62,12 @@ class VPD_EBANX_WC {
 	/**
 	 * Loads the plugin libs
 	 */
-	private function includes() {
-		require_once(self::INCLUDES_DIR . 'class-wc-vpd-credit-card-gateway-interceptor.php');
+	private function load_libs() {
+		//Includes
 		require_once(self::INCLUDES_DIR . 'class-wc-vpd-xml-interest-calculator.php');
+
+		//Interceptors
+		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-credit-card-gateway-interceptor.php');
 	}
 
 	/**

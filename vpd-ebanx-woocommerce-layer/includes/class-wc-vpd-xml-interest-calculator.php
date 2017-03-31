@@ -60,6 +60,7 @@ class WC_VPD_XML_Interest_Calculator {
 	}
 
 	public static function get_xml_path(){
-		return get_bloginfo( 'template_directory' ) . '/xml/' . 'sku_parques_pag.xml';
+		return ABSPATH.'sku_parques_pag.xml';
+		//return get_bloginfo( 'template_directory' ) . '/xml/' . 'sku_parques_pag.xml';
 	}
 }

@@ -17,13 +17,12 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-
 class VPD_EBANX_WC {
 	const INCLUDES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
 	const INTERCEPTORS_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'interceptors' . DIRECTORY_SEPARATOR;
 
 	const EBANX_PLUGIN_NAME = 'woocommerce-gateway-ebanx' . DIRECTORY_SEPARATOR . 'woocommerce-gateway-ebanx.php';
-	const MIN_WC_EBANX_VERSION = '1.11.0';
+	const MIN_WC_EBANX_VERSION = '1.10.1';
 
 	/**
 	 * Holds the singleton
@@ -66,7 +65,9 @@ class VPD_EBANX_WC {
 			return;
 		}
 
-		if (version_compare(WC_EBANX::VERSION, self::MIN_WC_EBANX_VERSION, '<')) {
+		$ebanx_version = (defined('WC_EBANX::VERSION')) ? WC_EBANX::VERSION : WC_EBANX::get_plugin_version();
+
+		if (version_compare($ebanx_version, self::MIN_WC_EBANX_VERSION, '<')) {
 			// TODO: a view with an update button
 			(new WC_VPD_EBANX_Notice())
 				->with_type('error')
@@ -89,7 +90,7 @@ class VPD_EBANX_WC {
 
 		//Interceptors
 		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-settings-interceptor.php');
-		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-credit-card-gateway-interceptor.php');
+		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-gateway-interceptor.php');
 	}
 
 	/**
@@ -97,7 +98,7 @@ class VPD_EBANX_WC {
 	 */
 	private function bind_hooks() {
 		$this->interceptors[] = new WC_VPD_Settings_Interceptor();
-		$this->interceptors[] = new WC_VPD_Credit_Card_Gateway_Interceptor();
+		$this->interceptors[] = new WC_VPD_Gateway_Interceptor();
 	}
 }
 

@@ -6,6 +6,12 @@ if (!defined('ABSPATH')) {
 
 class WC_VPD_Settings_Interceptor{
 	/**
+	 * Identify interceptor instances
+	 * @var string
+	 */
+	public $id = "settings";
+
+	/**
 	 * Binds hooks, starts vars
 	 */
 	public function __construct() {
@@ -21,11 +27,11 @@ class WC_VPD_Settings_Interceptor{
 			return;
 		}
 
-		(new WC_EBANX_Notice())
+		(new WC_VPD_EBANX_Notice())
 			->with_type('info')
-			->with_message('VPD Layer - Interest rates file lookup: "'.WC_VPD_XML_Interest_Calculator::get_xml_path().'"!')
+			->with_message('VPD Layer - Interest rates file lookup: <strong>'.WC_VPD_XML_Interest_Calculator::get_xml_path().'</strong>!')
 			->persistent()
-			->enqueue();
+			->enqueue(100);
 	}
 
 	/**
@@ -35,11 +41,12 @@ class WC_VPD_Settings_Interceptor{
 	 * @return array The modified form fields
 	 */
 	public function form_fields($fields) {
-		unset($fields['interest_rates_enabled']);
-		unset($fields['interest_rates_01']);
+		foreach ($fields as $field => $properties) {
+			if (strpos($field, 'interest_rates_') !== 0) {
+				continue;
+			}
 
-		for ($i = 2; $i <= 12; $i++) {
-			unset($fields['interest_rates_'.sprintf("%02d", $i)]);
+			unset($fields[$field]);
 		}
 
 		return $fields;

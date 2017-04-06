@@ -122,32 +122,43 @@ class WC_VPD_EBANX_Notice {
 	/**
 	 * Enqueues the notice to the WordPress hook
 	 *
+	 * @param  int $priority (optional) Sets the listener priority
 	 * @return WC_EBANX_Notices_Notice
 	 * @throws Exception
 	 */
-	public function enqueue() {
+	public function enqueue($priority = null) {
+		$priority = $priority === null ? 10 : $priority;
+
 		if (isset($this->view)) {
 			$view = $this->view;
+
 			add_action('admin_notices', function () use ($view) {
 				include TEMPLATES_DIR . 'views/html-notice-'.$view.'.php';
-			});
+			}, $priority);
+
 			$this->view = null;
 			return $this;
 		}
+
 		if (is_null($this->message)) {
 			throw new Exception("You need to specify a message");
 		}
+
 		$type = $this->type;
 		$message = $this->message;
 		$is_dismissible = $this->is_dismissible;
+
 		add_action('admin_notices', function () use ($type, $message, $is_dismissible) {
 			$classes = "notice notice-{$type}";
+
 			if ($is_dismissible) {
 				$classes .= ' is-dismissible';
 			}
+
 			$notice = "<div class='$classes'><p>{$message}</p></div>";
 			echo $notice;
-		});
+		}, $priority);
+
 		return $this;
 	}
 

@@ -101,6 +101,7 @@ class VPD_EBANX_WC {
 		//Interceptors
 		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-settings-interceptor.php');
 		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-gateway-interceptor.php');
+		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-cart-interceptor.php');
 	}
 
 	/**
@@ -109,6 +110,7 @@ class VPD_EBANX_WC {
 	private function bind_hooks() {
 		$this->interceptors[] = new WC_VPD_Settings_Interceptor();
 		$this->interceptors[] = new WC_VPD_Gateway_Interceptor();
+		$this->interceptors[] = new WC_VPD_Cart_Interceptor();
 	}
 }
 

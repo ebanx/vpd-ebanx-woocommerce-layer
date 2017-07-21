@@ -54,7 +54,7 @@ class VPD_EBANX_WC {
 	 * Plugin main code
 	 */
 	private function __construct() {
-		$this->load_libs();
+        $this->preload_libs();
 
 		if (!class_exists('WC_EBANX')) {
 			// TODO: a view with an install button
@@ -78,15 +78,24 @@ class VPD_EBANX_WC {
 			return;
 		}
 
+        $this->load_libs();
+
 		$this->bind_hooks();
 	}
 
-	/**
-	 * Loads the plugin libs
-	 */
-	private function load_libs() {
+    /**
+     * Loads the plugin libs
+     */
+    private function preload_libs() {
+        //Services
+        require_once(self::SERVICES_DIR . 'class-wc-ebanx-notice.php');
+    }
+
+    /**
+     * Loads the plugin libs
+     */
+    private function load_libs() {
 		//Includes
-		require_once(self::SERVICES_DIR . 'class-wc-ebanx-notice.php');
 		require_once(self::INCLUDES_DIR . 'class-wc-vpd-xml-interest-calculator.php');
 
 		//Interceptors

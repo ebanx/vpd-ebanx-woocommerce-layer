@@ -38,7 +38,7 @@ class VPD_EBANX_WC {
 	/**
 	 * Singleton initializer
 	 *
-	 * @return VPD_EBANX_WC_IR
+	 * @return VPD_EBANX_WC
 	 */
 	public static function get_instance() {
 		if (self::$instance == null) {

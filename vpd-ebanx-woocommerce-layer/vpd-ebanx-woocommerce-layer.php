@@ -19,6 +19,7 @@ if (!defined('ABSPATH')) {
 
 class VPD_EBANX_WC {
 	const INCLUDES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
+	const SERVICES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'services' . DIRECTORY_SEPARATOR;
 	const INTERCEPTORS_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'interceptors' . DIRECTORY_SEPARATOR;
 
 	const EBANX_PLUGIN_NAME = 'woocommerce-gateway-ebanx' . DIRECTORY_SEPARATOR . 'woocommerce-gateway-ebanx.php';
@@ -85,7 +86,7 @@ class VPD_EBANX_WC {
 	 */
 	private function load_libs() {
 		//Includes
-		require_once(self::INCLUDES_DIR . 'class-wc-ebanx-notice.php');
+		require_once(self::SERVICES_DIR . 'class-wc-ebanx-notice.php');
 		require_once(self::INCLUDES_DIR . 'class-wc-vpd-xml-interest-calculator.php');
 
 		//Interceptors

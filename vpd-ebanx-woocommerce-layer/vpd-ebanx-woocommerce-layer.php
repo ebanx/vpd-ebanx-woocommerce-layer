@@ -102,6 +102,7 @@ class VPD_EBANX_WC {
 		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-settings-interceptor.php');
 		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-gateway-interceptor.php');
 		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-cart-interceptor.php');
+		require_once(self::INTERCEPTORS_DIR . 'class-wc-vpd-checkout-interceptor.php');
 	}
 
 	/**
@@ -111,6 +112,7 @@ class VPD_EBANX_WC {
 		$this->interceptors[] = new WC_VPD_Settings_Interceptor();
 		$this->interceptors[] = new WC_VPD_Gateway_Interceptor();
 		$this->interceptors[] = new WC_VPD_Cart_Interceptor();
+		$this->interceptors[] = new WC_VPD_Checkout_Interceptor();
 	}
 }
 

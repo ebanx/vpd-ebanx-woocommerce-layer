@@ -17,7 +17,8 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-class VPD_EBANX_WC {
+class VPD_EBANX_WC
+{
 	const INCLUDES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
 	const SERVICES_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'services' . DIRECTORY_SEPARATOR;
 	const INTERCEPTORS_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'interceptors' . DIRECTORY_SEPARATOR;
@@ -40,7 +41,8 @@ class VPD_EBANX_WC {
 	 *
 	 * @return VPD_EBANX_WC
 	 */
-	public static function get_instance() {
+	public static function get_instance()
+	{
 		if (self::$instance == null) {
 			self::$instance = new self();
 		}
@@ -53,8 +55,9 @@ class VPD_EBANX_WC {
 	/**
 	 * Plugin main code
 	 */
-	private function __construct() {
-        $this->preload_libs();
+	private function __construct()
+	{
+		$this->preload_libs();
 
 		if (!class_exists('WC_EBANX')) {
 			// TODO: a view with an install button
@@ -63,6 +66,7 @@ class VPD_EBANX_WC {
 				->with_message('VPD Layer requires EBANX Payment Gateway for WooCommerce to work.')
 				->persistent()
 				->enqueue();
+
 			return;
 		}
 
@@ -72,29 +76,32 @@ class VPD_EBANX_WC {
 			// TODO: a view with an update button
 			(new WC_VPD_EBANX_Notice())
 				->with_type('error')
-				->with_message('VPD Layer requires EBANX Payment Gateway for WooCommerce '.self::MIN_WC_EBANX_VERSION.' or higher to work.')
+				->with_message('VPD Layer requires EBANX Payment Gateway for WooCommerce ' . self::MIN_WC_EBANX_VERSION . ' or higher to work.')
 				->persistent()
 				->enqueue();
+
 			return;
 		}
 
-        $this->load_libs();
+		$this->load_libs();
 
 		$this->bind_hooks();
 	}
 
-    /**
-     * Loads the plugin libs
-     */
-    private function preload_libs() {
-        //Services
-        require_once(self::SERVICES_DIR . 'class-wc-ebanx-notice.php');
-    }
+	/**
+	 * Loads the plugin libs
+	 */
+	private function preload_libs()
+	{
+		//Services
+		require_once(self::SERVICES_DIR . 'class-wc-ebanx-notice.php');
+	}
 
-    /**
-     * Loads the plugin libs
-     */
-    private function load_libs() {
+	/**
+	 * Loads the plugin libs
+	 */
+	private function load_libs()
+	{
 		//Includes
 		require_once(self::INCLUDES_DIR . 'class-wc-vpd-xml-interest-calculator.php');
 
@@ -108,7 +115,8 @@ class VPD_EBANX_WC {
 	/**
 	 * Binds hooks to functions
 	 */
-	private function bind_hooks() {
+	private function bind_hooks()
+	{
 		$this->interceptors[] = new WC_VPD_Settings_Interceptor();
 		$this->interceptors[] = new WC_VPD_Gateway_Interceptor();
 		$this->interceptors[] = new WC_VPD_Cart_Interceptor();

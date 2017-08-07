@@ -81,7 +81,7 @@ class WC_VPD_XML_Interest_Calculator {
 	 * @return string
 	 */
 	public static function get_xml_path() {
-		return ABSPATH.'sku_parques_pag.xml';
+		return ABSPATH.'xml/sku_pagamentos.xml';
 	}
 
 	/**

@@ -23,7 +23,7 @@ class WC_VPD_Checkout_Interceptor
 	 */
 	public function save_user_cpf()
 	{
-		$cpf = WC_EBANX_Request::read('CPF', '');
+		$cpf = WC_EBANX_Request::read('ebanx_billing_brazil_document', '');
 		if (empty($cpf)) {
 			wc_add_notice('<strong>CPF não informado</strong>. Por favor, informe um CPF válido.', 'error');
 
@@ -45,14 +45,14 @@ class WC_VPD_Checkout_Interceptor
 	 */
 	public function validar_total_mes()
 	{
-		$cpf            = WC_EBANX_Request::read('cpf', '');
-		$cpf2           = WC_EBANX_Request::read('cpf2', '');
+//		var_dump($_REQUEST);exit;
+		$cpf            = WC_EBANX_Request::read('ebanx_billing_brazil_document');
 		$payment_method = WC_EBANX_Request::read('payment_method', '');
 
 		//Valida os casos de TEF e BOLETO
 		switch ($payment_method) {
 			case 'ebanx_cc':
-				$retorno = json_decode($this->verificar_saldo_ebanx($cpf2), true);
+				$retorno = json_decode($this->verificar_saldo_ebanx($cpf), true);
 
 				if ($retorno["status"] == "SUCCESS") {
 					// Realiza a validação do total do mês
@@ -116,5 +116,10 @@ class WC_VPD_Checkout_Interceptor
 		}
 
 		return true;
+	}
+
+	private function verificar_saldo_ebanx($cpf)
+	{
+		return file_get_contents( "https://api.ebanx.com/ws/documentbalance?integration_key=d2d6a9311fe8c55eaada29acea2c9e869afd5643c8ebdf9f139589dbea79d6f73f8f1b14f7e8712126c5ecbe6abe61bac598&document=" . $cpf . "&currency_code=USD");
 	}
 }

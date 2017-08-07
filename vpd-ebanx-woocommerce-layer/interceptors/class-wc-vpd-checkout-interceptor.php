@@ -45,7 +45,6 @@ class WC_VPD_Checkout_Interceptor
 	 */
 	public function validar_total_mes()
 	{
-//		var_dump($_REQUEST);exit;
 		$cpf            = WC_EBANX_Request::read('ebanx_billing_brazil_document');
 		$payment_method = WC_EBANX_Request::read('payment_method', '');
 

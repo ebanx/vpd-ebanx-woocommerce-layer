@@ -64,14 +64,12 @@ class WC_VPD_XML_Interest_Calculator {
 		$interest_rate = 0.0;
 
 		if ($info && $instalments > 0) {
-			$interest_rate = $instalments > 4
-				? $info->dezx // 5x and up
-				: ( $instalments > 1
-					? $info->quatrox // 2x to 4x
-					: $info->avista ); // 1x
+			$interest_rate = (float) ($instalments > 6
+				? $info->dozevezes // 7x and up
+				: $info->seisvezes); // up to 6x
 		}
 
-		$base = $product->get_display_price();
+		$base = (float) $info->boleto;
 		return array(( $base * ( 1.0 + $interest_rate ) ) * $quantity, $interest_rate);
 	}
 

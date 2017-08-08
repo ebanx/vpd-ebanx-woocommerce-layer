@@ -88,6 +88,7 @@ class WC_VPD_XML_Interest_Calculator {
 	 * Search for the product rates by sku
 	 *
 	 * @param  string $sku The product sku
+	 * @param  SimpleXMLElement $products
 	 * @return SimpleXMLElement
 	 */
 	private static function get_product_rates($sku, $products) {

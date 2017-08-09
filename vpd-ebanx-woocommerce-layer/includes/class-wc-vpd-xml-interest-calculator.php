@@ -81,7 +81,9 @@ class WC_VPD_XML_Interest_Calculator {
 	 * @return string
 	 */
 	public static function get_xml_path() {
-		return ABSPATH.'xml/sku_pagamentos.xml';
+		$ebanx_config = new WC_EBANX_Global_Gateway();
+
+		return $ebanx_config->get_setting_or_default( 'xml_path', ABSPATH . 'xml/sku_pagamentos.xml' );
 	}
 
 	/**

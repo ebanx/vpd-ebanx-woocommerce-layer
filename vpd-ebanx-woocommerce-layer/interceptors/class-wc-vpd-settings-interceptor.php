@@ -38,16 +38,23 @@ class WC_VPD_Settings_Interceptor{
 	 * Removes some form fields from settings to prevent use
 	 *
 	 * @param  array $fields The original form fields from EBANX plugin
+	 *
 	 * @return array The modified form fields
 	 */
-	public function form_fields($fields) {
-		foreach ($fields as $field => $properties) {
-			if (strpos($field, 'interest_rates_') !== 0) {
+	public function form_fields( $fields ) {
+		foreach ( $fields as $field => $properties ) {
+			if ( strpos( $field, 'interest_rates_' ) !== 0 ) {
 				continue;
 			}
 
-			unset($fields[$field]);
+			unset( $fields[ $field ] );
 		}
+		$fields = array(
+			'xml_path' => array(
+				'title' => __( 'XML Path', 'vpd-ebanx-woocommerce-layer' ),
+				'type'  => 'text',
+			)
+		) + $fields;
 
 		return $fields;
 	}

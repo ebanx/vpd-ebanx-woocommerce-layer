@@ -24,7 +24,7 @@ class VPD_EBANX_WC
 	const INTERCEPTORS_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'interceptors' . DIRECTORY_SEPARATOR;
 
 	const EBANX_PLUGIN_NAME = 'woocommerce-gateway-ebanx' . DIRECTORY_SEPARATOR . 'woocommerce-gateway-ebanx.php';
-	const MIN_WC_EBANX_VERSION = '1.10.1';
+	const MIN_WC_EBANX_VERSION = '1.18.0';
 
 	/**
 	 * Holds the singleton

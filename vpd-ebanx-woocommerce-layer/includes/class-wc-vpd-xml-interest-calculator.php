@@ -21,8 +21,8 @@ class WC_VPD_XML_Interest_Calculator {
 	public static function calculate_total_for_order(WC_Order $order, $instalments) {
 		return self::calculate_total(array_map(function($item){
 			return array(
-				'product_id' => $item['item_meta']['_product_id'][0],
-				'quantity' => $item['item_meta']['_qty'][0]
+				'product_id' => $item['product_id'],
+				'quantity' => $item['quantity']
 			);
 		}, $order->get_items()), $instalments);
 	}

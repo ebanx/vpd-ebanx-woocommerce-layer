@@ -83,6 +83,8 @@ class WC_VPD_Gateway_Interceptor {
 
 		if ( isset( $_POST['ebanx_billing_instalments'] ) ) {
 			$instalments = $_POST['ebanx_billing_instalments'];
+		} elseif (isset($_POST['ebanx-credit-card-installments'])) {
+			$instalments = $_POST['ebanx-credit-card-installments'];
 		}
 
 		list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total_for_order($order, $instalments);

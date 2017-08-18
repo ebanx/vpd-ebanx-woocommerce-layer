@@ -56,10 +56,18 @@ class WC_VPD_XML_Interest_Calculator {
 	 * @return array The calculated price and interest rate
 	 */
 	public static function calculate($cart_item, $instalments = 1) {
-		$product = new WC_Product($cart_item['product_id']);
+		global $product;
+		$product_in_cart = new WC_Product($cart_item['product_id']);
 		$quantity = $cart_item['quantity'];
 
-		$info = self::get_product_rates($product->get_sku(), self::get_product_data());
+		if ( !$cart_item['product_id'] ) {
+			$product_in_cart = $product;
+		}
+		if ( !$quantity ) {
+			$quantity = 1;
+		}
+
+		$info = self::get_product_rates($product_in_cart->get_sku(), self::get_product_data());
 
 		$interest_rate = 0.0;
 

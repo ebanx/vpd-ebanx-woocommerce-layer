@@ -64,9 +64,13 @@ class WC_VPD_XML_Interest_Calculator {
 		$interest_rate = 0.0;
 
 		if ($info && $instalments > 0) {
-			$interest_rate = (float) ($instalments > 6
-				? $info->dozevezes // 7x and up
-				: $info->seisvezes); // up to 6x
+			if ($instalments > 6) {
+				$interest_rate = (float) $info->dozevezes;
+			} elseif ($instalments > 1) {
+				$interest_rate = (float) $info->seisvezes;
+			} else {
+				$interest_rate = (float) $info->avista;
+			}
 		}
 
 		$base = (float) $info->boleto;

@@ -27,12 +27,16 @@ class WC_VPD_Gateway_Interceptor {
 	public function __construct(){
 		add_filter('ebanx_get_payment_terms', array($this, 'get_payment_terms'));
 		add_filter('ebanx_get_custom_total_amount', array($this, 'get_custom_amount'), 10, 2);
-		add_action('ebanx_before_process_payment', array($this, 'before_process_payment'));
+		add_filter('ebanx_before_process_payment', array($this, 'before_process_payment'));
 	}
 
 	public function get_custom_amount($amount, $instalments) {
 		$cart_items = WC()->cart->get_cart();
-		list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
+		try {
+			list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
+		} catch (Exception $e) {
+			throw $e;
+		}
 
 		return $total;
 	}
@@ -45,28 +49,33 @@ class WC_VPD_Gateway_Interceptor {
 	public function get_payment_terms($payment_terms) {
 		$cart_items = WC()->cart->get_cart();
 
-		return array_map(function($term) use ($cart_items) {
-			if (count($cart_items) === 0) {
-				$cart_items = array($term);
-			}
+		try {
+			return array_map(function($term) use ($cart_items) {
+				if (count($cart_items) === 0) {
+					$cart_items = array($term);
+				}
 
-			$instalments = $term['number'];
-			list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
+				$instalments = $term['number'];
 
-			$result = array(
-				'price' => $total / $instalments,
-				'has_interest' => $has_interest,
-				'number' => $instalments
-			);
+				list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
 
-			if (count($cart_items) === 0) {
-				$result['product_id'] = $term['product_id'];
-				$result['quantity'] = $term['quantity'];
-			}
+				$result = array(
+					'price' => $total / $instalments,
+					'has_interest' => $has_interest,
+					'number' => $instalments
+				);
 
-			return $result;
+				if (count($cart_items) === 0) {
+					$result['product_id'] = $term['product_id'];
+					$result['quantity'] = $term['quantity'];
+				}
 
-		}, $payment_terms);
+				return $result;
+
+			}, $payment_terms);
+		} catch (Exception $e) {
+			throw $e;
+		}
 	}
 
 	/**

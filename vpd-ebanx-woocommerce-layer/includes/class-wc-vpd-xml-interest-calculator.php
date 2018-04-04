@@ -19,16 +19,12 @@ class WC_VPD_XML_Interest_Calculator {
 	 * @return array
 	 */
 	public static function calculate_total_for_order(WC_Order $order, $instalments) {
-		try {
-			return self::calculate_total( array_map( function ( $item ) {
-				return array(
-					'product_id' => $item['product_id'],
-					'quantity'   => $item['quantity']
-				);
-			}, $order->get_items() ), $instalments );
-		} catch (Exception $e) {
-			throw $e;
-		}
+		return self::calculate_total( array_map( function ( $item ) {
+			return array(
+				'product_id' => $item['product_id'],
+				'quantity'   => $item['quantity']
+			);
+		}, $order->get_items() ), $instalments );
 	}
 
 	/**

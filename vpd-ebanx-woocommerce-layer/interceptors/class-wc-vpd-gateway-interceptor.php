@@ -27,7 +27,7 @@ class WC_VPD_Gateway_Interceptor {
 	public function __construct(){
 		add_filter('ebanx_get_payment_terms', array($this, 'get_payment_terms'));
 		add_filter('ebanx_get_custom_total_amount', array($this, 'get_custom_amount'), 10, 2);
-		add_action('ebanx_before_process_payment', array($this, 'before_process_payment'));
+		add_filter('ebanx_before_process_payment', array($this, 'before_process_payment'));
 	}
 
 	public function get_custom_amount($amount, $instalments) {
@@ -51,6 +51,7 @@ class WC_VPD_Gateway_Interceptor {
 			}
 
 			$instalments = $term['number'];
+
 			list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
 
 			$result = array(

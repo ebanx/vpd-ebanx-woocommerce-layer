@@ -19,12 +19,12 @@ class WC_VPD_XML_Interest_Calculator {
 	 * @return array
 	 */
 	public static function calculate_total_for_order(WC_Order $order, $instalments) {
-		return self::calculate_total(array_map(function($item){
+		return self::calculate_total( array_map( function ( $item ) {
 			return array(
 				'product_id' => $item['product_id'],
-				'quantity' => $item['quantity']
+				'quantity'   => $item['quantity']
 			);
-		}, $order->get_items()), $instalments);
+		}, $order->get_items() ), $instalments );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class WC_VPD_XML_Interest_Calculator {
 			$quantity = 1;
 		}
 
-		$info = self::get_product_rates($product_in_cart->get_sku(), self::get_product_data());
+		$info = self::get_product_rates($product_in_cart->get_sku(), self::get_product_data() );
 
 		$interest_rate = 0.0;
 
@@ -123,15 +123,20 @@ class WC_VPD_XML_Interest_Calculator {
 	 * Reads the xml file
 	 *
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
 	private static function get_product_data() {
 		if (self::$product_data == null) {
+			if (!file_exists(realpath(self::get_xml_path()))) {
+				throw new Exception('No XML found');
+			}
 			$xml = simplexml_load_file(self::get_xml_path());
 			if (!$xml) {
 				return null;
 			}
 			self::$product_data = $xml->elemento;
 		}
+
 
 		return self::$product_data;
 	}

@@ -32,11 +32,7 @@ class WC_VPD_Gateway_Interceptor {
 
 	public function get_custom_amount($amount, $instalments) {
 		$cart_items = WC()->cart->get_cart();
-		try {
-			list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
-		} catch (Exception $e) {
-			throw $e;
-		}
+		list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
 
 		return $total;
 	}

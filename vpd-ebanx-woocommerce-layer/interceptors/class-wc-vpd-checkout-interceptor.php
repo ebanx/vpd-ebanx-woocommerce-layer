@@ -47,11 +47,12 @@ class WC_VPD_Checkout_Interceptor
 	{
 		$cpf            = WC_EBANX_Request::read('ebanx_billing_brazil_document');
 		$payment_method = WC_EBANX_Request::read('payment_method', '');
+		$integration_key = (new WC_EBANX_Global_Gateway())->get_setting_or_default('live_private_key');
 
 		//Valida os casos de TEF e BOLETO
 		switch ($payment_method) {
 			case 'ebanx_cc':
-				$retorno = json_decode($this->verificar_saldo_ebanx($cpf), true);
+				$retorno = json_decode($this->verificar_saldo_ebanx($cpf, $integration_key), true);
 
 				if ($retorno["status"] == "SUCCESS") {
 					// Realiza a validação do total do mês
@@ -75,7 +76,7 @@ class WC_VPD_Checkout_Interceptor
 				}
 				break;
 			default:
-				$retorno = json_decode($this->verificar_saldo_ebanx($cpf), true);
+				$retorno = json_decode($this->verificar_saldo_ebanx($cpf, $integration_key), true);
 
 				if ($retorno["status"] == "SUCCESS") {
 					// Realiza a validação do total do mês
@@ -117,8 +118,8 @@ class WC_VPD_Checkout_Interceptor
 		return true;
 	}
 
-	private function verificar_saldo_ebanx($cpf)
+	private function verificar_saldo_ebanx($cpf, $integration_key)
 	{
-		return file_get_contents( "https://api.ebanx.com/ws/documentbalance?integration_key=d2d6a9311fe8c55eaada29acea2c9e869afd5643c8ebdf9f139589dbea79d6f73f8f1b14f7e8712126c5ecbe6abe61bac598&document=" . $cpf . "&currency_code=USD");
+		return file_get_contents( "https://api.ebanx.com/ws/documentbalance?integration_key=" . $integration_key . "&document=" . $cpf . "&currency_code=USD");
 	}
 }

@@ -45,33 +45,29 @@ class WC_VPD_Gateway_Interceptor {
 	public function get_payment_terms($payment_terms) {
 		$cart_items = WC()->cart->get_cart();
 
-		try {
-			return array_map(function($term) use ($cart_items) {
-				if (count($cart_items) === 0) {
-					$cart_items = array($term);
-				}
+		return array_map(function($term) use ($cart_items) {
+			if (count($cart_items) === 0) {
+				$cart_items = array($term);
+			}
 
-				$instalments = $term['number'];
+			$instalments = $term['number'];
 
-				list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
+			list($total, $has_interest) = WC_VPD_XML_Interest_Calculator::calculate_total($cart_items, $instalments);
 
-				$result = array(
-					'price' => $total / $instalments,
-					'has_interest' => $has_interest,
-					'number' => $instalments
-				);
+			$result = array(
+				'price' => $total / $instalments,
+				'has_interest' => $has_interest,
+				'number' => $instalments
+			);
 
-				if (count($cart_items) === 0) {
-					$result['product_id'] = $term['product_id'];
-					$result['quantity'] = $term['quantity'];
-				}
+			if (count($cart_items) === 0) {
+				$result['product_id'] = $term['product_id'];
+				$result['quantity'] = $term['quantity'];
+			}
 
-				return $result;
+			return $result;
 
-			}, $payment_terms);
-		} catch (Exception $e) {
-			throw $e;
-		}
+		}, $payment_terms);
 	}
 
 	/**

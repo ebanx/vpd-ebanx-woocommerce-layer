@@ -127,11 +127,12 @@ class WC_VPD_XML_Interest_Calculator {
 	 * Reads the xml file
 	 *
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
 	private static function get_product_data() {
 		if (self::$product_data == null) {
-			if (!file_exists(self::get_xml_path())) {
-				throw new Exception('No XML');
+			if (!file_exists(realpath(self::get_xml_path()))) {
+				throw new Exception('No XML found');
 			}
 			$xml = simplexml_load_file(self::get_xml_path());
 			if (!$xml) {
@@ -139,6 +140,7 @@ class WC_VPD_XML_Interest_Calculator {
 			}
 			self::$product_data = $xml->elemento;
 		}
+
 
 		return self::$product_data;
 	}

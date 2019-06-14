@@ -120,6 +120,6 @@ class WC_VPD_Checkout_Interceptor
 
 	private function verificar_saldo_ebanx($cpf, $integration_key)
 	{
-		return file_get_contents( "https://api.ebanx.com/ws/documentbalance?integration_key=" . $integration_key . "&document=" . $cpf . "&currency_code=USD");
+		return file_get_contents( "https://api.ebanxpay.com/ws/documentbalance?integration_key=" . $integration_key . "&document=" . $cpf . "&currency_code=USD");
 	}
 }
